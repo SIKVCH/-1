@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Пивная лавка — Снегири</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f0f12;
+  --bg-elevated: #1a1a1f;
+  --bg-card: #1e1e24;
+  --bg-hover: #26262e;
+  --text: #f0f0f5;
+  --text-secondary: #a0a0b0;
+  --text-muted: #6b6b7b;
+  --accent: #e8a838;
+  --accent-dark: #c48a2a;
+  --accent-glow: rgba(232,168,56,0.15);
+  --border: #2a2a35;
+  --danger: #e85d5d;
+  --success: #5de88a;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --shadow: 0 8px 32px rgba(0,0,0,0.4);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height:1.6;
+  min-height:100vh;
+}
+img { max-width:100%; display:block; }
+a { color:inherit; text-decoration:none; }
+button { font-family:inherit; cursor:pointer; border:none; background:none; color:inherit; }
+ul { list-style:none; }
+
+/* Header */
+.header {
+  position:fixed; top:0; left:0; right:0; z-index:1000;
+  background: rgba(15,15,18,0.85);
+  backdrop-filter: blur(16px);
+  border-bottom:1px solid var(--border);
+}
+.header-inner {
+  max-width:1200px; margin:0 auto; padding:0 24px;
+  display:flex; align-items:center; justify-content:space-between; height:64px;
+}
+.logo { display:flex; align-items:center; color:var(--accent); }
+.logo-mark {
+  width:44px; height:44px; border-radius:14px;
+  display:flex; align-items:center; justify-content:center;
+  background:linear-gradient(145deg,#f0bb57,#d88b1f);
+  box-shadow:0 8px 22px rgba(232,168,56,.22);
+  border:1px solid rgba(255,255,255,.1);
+  transition:transform .2s ease, box-shadow .2s ease;
+}
+.logo:hover .logo-mark { transform:translateY(-1px) rotate(-2deg); box-shadow:0 10px 26px rgba(232,168,56,.32); }
+.logo-mark svg { width:32px; height:32px; }
+
+.nav { display:flex; gap:28px; align-items:center; }
+.nav a {
+  font-size:14px; font-weight:500; color:var(--text-secondary);
+  transition: color 0.2s; position:relative;
+}
+.nav a:hover { color:var(--text); }
+.nav a.active { color:var(--accent); }
+.nav a.active::after {
+  content:''; position:absolute; bottom:-20px; left:0; right:0;
+  height:2px; background:var(--accent); border-radius:2px;
+}
+.cart-btn {
+  position:relative; display:flex; align-items:center; gap:8px;
+  background: var(--bg-card); border:1px solid var(--border);
+  padding:8px 16px; border-radius:var(--radius-sm);
+  font-size:14px; font-weight:500; color:var(--text);
+  transition: all 0.2s;
+}
+.cart-btn:hover { background:var(--bg-hover); border-color:var(--accent); }
+.cart-count {
+  position:absolute; top:-6px; right:-6px;
+  background:var(--accent); color:#1a1200; font-size:11px; font-weight:700;
+  width:20px; height:20px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+}
+.mobile-menu-btn { display:none; }
+
+/* Hero */
+.hero {
+  margin-top:64px; position:relative;
+  background: linear-gradient(135deg, #1a1208 0%, #0f0f12 60%, #1a1510 100%);
+  overflow:hidden;
+}
+.hero::before {
+  content:''; position:absolute; inset:0;
+  background: radial-gradient(ellipse at 30% 20%, rgba(232,168,56,0.08) 0%, transparent 60%);
+  pointer-events:none;
+}
+.hero-inner {
+  max-width:1200px; margin:0 auto; padding:80px 24px;
+  display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center;
+  position:relative; z-index:1;
+}
+.hero-text h1 {
+  font-size:52px; font-weight:700; line-height:1.1; letter-spacing:-1.5px;
+  margin-bottom:20px;
+}
+.hero-text h1 span { color:var(--accent); }
+.hero-text p {
+  font-size:18px; color:var(--text-secondary); max-width:480px; margin-bottom:32px;
+}
+.hero-badges { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:32px; }
+.badge {
+  background: var(--bg-card); border:1px solid var(--border);
+  padding:8px 16px; border-radius:100px; font-size:13px; font-weight:500;
+  color:var(--text-secondary); display:flex; align-items:center; gap:6px;
+}
+.badge svg { width:16px; height:16px; fill:var(--accent); }
+.hero-cta {
+  display:flex; gap:16px; flex-wrap:wrap;
+}
+.btn {
+  display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  padding:14px 28px; border-radius:var(--radius-sm); font-size:15px; font-weight:600;
+  transition: all 0.2s; border:1px solid transparent;
+}
+.btn-primary {
+  background: var(--accent); color:#1a1200;
+}
+.btn-primary:hover { background: var(--accent-dark); transform: translateY(-1px); }
+.btn-secondary {
+  background: var(--bg-card); color:var(--text); border-color:var(--border);
+}
+.btn-secondary:hover { background: var(--bg-hover); border-color:var(--text-muted); }
+.hero-img {
+  border-radius:var(--radius-lg); overflow:hidden;
+  box-shadow: var(--shadow);
+  border:1px solid var(--border);
+  position:relative;
+}
+.hero-img img {
+  width:100%; height:360px; object-fit:cover;
+  filter: brightness(0.9) contrast(1.05);
+}
+.hero-img::after {
+  content:''; position:absolute; inset:0;
+  background: linear-gradient(to top, rgba(15,15,18,0.6) 0%, transparent 50%);
+}
+
+/* Section */
+.section { padding:80px 24px; }
+.section-inner { max-width:1200px; margin:0 auto; }
+.section-header {
+  display:flex; align-items:flex-end; justify-content:space-between;
+  margin-bottom:40px; flex-wrap:wrap; gap:16px;
+}
+.section-title {
+  font-size:32px; font-weight:700; letter-spacing:-0.8px;
+}
+.section-title span { color:var(--accent); }
+.section-subtitle {
+  font-size:16px; color:var(--text-secondary); margin-top:6px;
+}
+
+/* Filters */
+.filters { display:flex; gap:10px; flex-wrap:wrap; }
+.filter-btn {
+  padding:8px 18px; border-radius:100px; font-size:14px; font-weight:500;
+  background: var(--bg-card); border:1px solid var(--border);
+  color:var(--text-secondary); transition: all 0.2s;
+}
+.filter-btn:hover { border-color:var(--text-muted); color:var(--text); }
+.filter-btn.active {
+  background: var(--accent-glow); border-color:var(--accent); color:var(--accent);
+}
+
+/* Catalog Grid */
+.catalog-grid {
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap:20px;
+}
+.product-card {
+  background: var(--bg-card); border:1px solid var(--border);
+  border-radius:var(--radius-md); overflow:hidden;
+  transition: all 0.25s; position:relative;
+}
+.product-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent-glow);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+}
+.product-img {
+  height:180px; background: var(--bg-elevated);
+  display:flex; align-items:center; justify-content:center;
+  position:relative; overflow:hidden;
+}
+.product-img .emoji {
+  font-size:72px; line-height:1; filter: grayscale(0.3);
+  transition: transform 0.3s;
+}
+.product-card:hover .product-img .emoji { transform: scale(1.1); }
+.product-tag {
+  position:absolute; top:12px; left:12px;
+  background: rgba(15,15,18,0.85); backdrop-filter:blur(8px);
+  padding:4px 10px; border-radius:100px; font-size:11px; font-weight:600;
+  color:var(--accent); border:1px solid var(--border);
+}
+.product-tag.new { color:var(--success); }
+.product-tag.hit { color:var(--accent); }
+.product-body { padding:18px; }
+.product-name {
+  font-size:17px; font-weight:600; margin-bottom:6px;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.product-desc {
+  font-size:13px; color:var(--text-muted); margin-bottom:14px;
+  line-height:1.5; min-height:40px;
+}
+.product-meta {
+  display:flex; align-items:center; justify-content:space-between;
+}
+.product-price {
+  font-size:20px; font-weight:700; color:var(--accent);
+}
+.product-price .unit { font-size:13px; font-weight:400; color:var(--text-muted); }
+.add-btn {
+  width:40px; height:40px; border-radius:var(--radius-sm);
+  background: var(--accent); color:#1a1200;
+  display:flex; align-items:center; justify-content:center;
+  font-size:20px; font-weight:700; transition: all 0.2s;
+}
+.add-btn:hover { background: var(--accent-dark); transform: scale(1.05); }
+.add-btn.added { background: var(--success); }
+
+/* Quantity controls */
+.qty-controls {
+  display:flex; align-items:center; gap:4px;
+  background: var(--bg-elevated); border-radius:var(--radius-sm);
+  padding:4px;
+}
+.qty-btn {
+  width:32px; height:32px; border-radius:6px;
+  background: var(--bg-card); color:var(--text);
+  display:flex; align-items:center; justify-content:center;
+  font-size:16px; font-weight:600; border:1px solid var(--border);
+  transition: all 0.15s;
+}
+.qty-btn:hover { background: var(--bg-hover); }
+.qty-value {
+  min-width:32px; text-align:center; font-size:15px; font-weight:600;
+}
+
+
+/* Catalog accents */
+.catalog-note {
+  margin: -18px 0 28px;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  background: linear-gradient(135deg, rgba(232,168,56,0.08), rgba(255,255,255,0.015));
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+.catalog-note strong { color: var(--accent); }
+.catalog-actions {
+  display:flex; justify-content:center; margin-top:28px;
+}
+.catalog-more-btn {
+  padding:12px 22px; border-radius:100px;
+  border:1px solid var(--border); background:var(--bg-card);
+  color:var(--text); font-size:14px; font-weight:600;
+  transition:all .2s;
+}
+.catalog-more-btn:hover {
+  border-color:var(--accent); color:var(--accent);
+  transform:translateY(-1px);
+}
+.product-availability {
+  font-size:12px; font-weight:600; color:var(--text-secondary);
+  padding:8px 10px; border:1px solid var(--border);
+  border-radius:var(--radius-sm); background:var(--bg-elevated);
+}
+.crayfish-section {
+  padding:34px 24px 0;
+}
+.crayfish-feature {
+  max-width:1200px; margin:0 auto;
+  display:grid; grid-template-columns:1.1fr .9fr; gap:32px; align-items:center;
+  padding:34px;
+  border-radius:var(--radius-lg);
+  border:1px solid rgba(232,168,56,.28);
+  background:
+    radial-gradient(circle at 85% 15%, rgba(232,168,56,.16), transparent 34%),
+    linear-gradient(135deg, #1b1712 0%, #141418 65%, #17120d 100%);
+  box-shadow:0 16px 48px rgba(0,0,0,.22);
+}
+.crayfish-kicker {
+  display:inline-flex; align-items:center; gap:8px;
+  color:var(--accent); font-size:13px; font-weight:700;
+  letter-spacing:.3px; text-transform:uppercase; margin-bottom:10px;
+}
+.crayfish-feature h2 {
+  font-size:36px; line-height:1.15; letter-spacing:-.8px; margin-bottom:12px;
+}
+.crayfish-feature p {
+  color:var(--text-secondary); max-width:620px; margin-bottom:22px;
+}
+.crayfish-points {
+  display:flex; gap:10px; flex-wrap:wrap; margin-bottom:24px;
+}
+.crayfish-point {
+  padding:7px 12px; border-radius:100px;
+  border:1px solid var(--border); background:rgba(255,255,255,.025);
+  font-size:12px; color:var(--text-secondary);
+}
+.crayfish-visual {
+  min-height:250px; border-radius:var(--radius-md);
+  display:flex; align-items:center; justify-content:center;
+  background:linear-gradient(145deg, rgba(232,168,56,.11), rgba(255,255,255,.02));
+  border:1px solid var(--border);
+  font-size:120px;
+}
+.section-soft {
+  background:linear-gradient(180deg, rgba(255,255,255,.018), transparent 70%);
+}
+@media (max-width: 760px) {
+  .crayfish-feature { grid-template-columns:1fr; padding:24px; }
+  .crayfish-feature h2 { font-size:28px; }
+  .crayfish-visual { min-height:180px; font-size:90px; }
+}
+
+/* Reviews */
+.reviews-grid {
+  display:grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap:20px;
+}
+.review-card {
+  background: var(--bg-card); border:1px solid var(--border);
+  border-radius:var(--radius-md); padding:24px;
+  transition: all 0.2s;
+}
+.review-card:hover { border-color: var(--accent-glow); }
+.review-header {
+  display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;
+}
+.review-author {
+  display:flex; align-items:center; gap:12px;
+}
+.review-avatar {
+  width:40px; height:40px; border-radius:50%;
+  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+  display:flex; align-items:center; justify-content:center;
+  font-size:16px; font-weight:700; color:#1a1200;
+}
+.review-name { font-weight:600; font-size:15px; }
+.review-date { font-size:12px; color:var(--text-muted); }
+.review-stars { display:flex; gap:3px; }
+.review-stars svg { width:16px; height:16px; fill:var(--accent); }
+.review-text {
+  font-size:14px; color:var(--text-secondary); line-height:1.7;
+}
+.review-rating-summary {
+  display:flex; align-items:center; gap:16px; margin-bottom:32px;
+  flex-wrap:wrap;
+}
+.rating-big {
+  font-size:56px; font-weight:700; color:var(--accent); line-height:1;
+}
+.rating-info { display:flex; flex-direction:column; gap:4px; }
+.rating-label { font-size:14px; color:var(--text-muted); }
+.rating-count { font-size:14px; color:var(--text-secondary); }
+
+/* Contacts */
+.contacts-grid {
+  display:grid; grid-template-columns: 1fr 1fr; gap:40px; align-items:start;
+}
+.contact-card {
+  background: var(--bg-card); border:1px solid var(--border);
+  border-radius:var(--radius-md); padding:28px;
+}
+.contact-item {
+  display:flex; align-items:flex-start; gap:16px; margin-bottom:24px;
+}
+.contact-item:last-child { margin-bottom:0; }
+.contact-icon {
+  width:44px; height:44px; border-radius:var(--radius-sm);
+  background: var(--accent-glow); border:1px solid var(--border);
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+}
+.contact-icon svg { width:22px; height:22px; fill:var(--accent); }
+.contact-label { font-size:12px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px; }
+.contact-value { font-size:16px; font-weight:600; color:var(--text); }
+.contact-value a { color:var(--accent); transition: opacity 0.2s; }
+.contact-value a:hover { opacity:0.8; }
+.map-placeholder {
+  background: var(--bg-card); border:1px solid var(--border);
+  border-radius:var(--radius-md); overflow:hidden; height:100%; min-height:360px;
+  display:flex; flex-direction:column;
+}
+.map-frame {
+  flex:1; border:none; width:100%; min-height:300px;
+  filter: grayscale(0.3) brightness(0.85) contrast(1.1);
+}
+.map-caption {
+  padding:16px 20px; border-top:1px solid var(--border);
+  font-size:14px; color:var(--text-secondary);
+  display:flex; align-items:center; gap:8px;
+}
+.map-caption svg { width:16px; height:16px; fill:var(--accent); }
+
+/* Cart Modal */
+.modal-overlay {
+  position:fixed; inset:0; z-index:2000;
+  background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
+  display:none; align-items:center; justify-content:center;
+  padding:24px;
+}
+.modal-overlay.open { display:flex; }
+.modal {
+  background: var(--bg-elevated); border:1px solid var(--border);
+  border-radius:var(--radius-lg); width:100%; max-width:520px;
+  max-height:85vh; overflow:hidden; display:flex; flex-direction:column;
+  box-shadow: var(--shadow);
+  animation: modalIn 0.25s ease-out;
+}
+@keyframes modalIn {
+  from { opacity:0; transform: translateY(20px) scale(0.97); }
+  to { opacity:1; transform: translateY(0) scale(1); }
+}
+.modal-header {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:20px 24px; border-bottom:1px solid var(--border);
+}
+.modal-title { font-size:20px; font-weight:700; }
+.modal-close {
+  width:36px; height:36px; border-radius:var(--radius-sm);
+  background: var(--bg-card); border:1px solid var(--border);
+  display:flex; align-items:center; justify-content:center;
+  color:var(--text-secondary); transition: all 0.2s;
+}
+.modal-close:hover { background: var(--bg-hover); color:var(--text); }
+.modal-body { padding:20px 24px; overflow-y:auto; flex:1; }
+.cart-empty {
+  text-align:center; padding:40px 20px; color:var(--text-muted);
+}
+.cart-empty svg { width:64px; height:64px; fill:var(--text-muted); opacity:0.4; margin-bottom:16px; }
+.cart-item {
+  display:flex; align-items:center; gap:16px; padding:14px 0;
+  border-bottom:1px solid var(--border);
+}
+.cart-item:last-child { border-bottom:none; }
+.cart-item-img {
+  width:56px; height:56px; border-radius:var(--radius-sm);
+  background: var(--bg-card); display:flex; align-items:center; justify-content:center;
+  font-size:28px; flex-shrink:0;
+}
+.cart-item-info { flex:1; min-width:0; }
+.cart-item-name { font-weight:600; font-size:15px; margin-bottom:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.cart-item-price { font-size:13px; color:var(--text-muted); }
+.cart-item-total { font-weight:700; font-size:15px; color:var(--accent); min-width:70px; text-align:right; }
+.modal-footer {
+  padding:20px 24px; border-top:1px solid var(--border);
+  background: var(--bg-card);
+}
+.cart-total-row {
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:16px;
+}
+.cart-total-label { font-size:16px; color:var(--text-secondary); }
+.cart-total-value { font-size:24px; font-weight:700; color:var(--accent); }
+.cart-note {
+  font-size:13px; color:var(--text-muted); margin-bottom:16px; text-align:center;
+}
+.btn-full { width:100%; }
+
+/* Footer */
+.footer {
+  background: var(--bg-elevated); border-top:1px solid var(--border);
+  padding:40px 24px;
+}
+.footer-inner {
+  max-width:1200px; margin:0 auto;
+  display:flex; align-items:center; justify-content:space-between;
+  flex-wrap:wrap; gap:16px;
+}
+.footer-left { font-size:14px; color:var(--text-muted); }
+.footer-right { display:flex; gap:20px; }
+.footer-right a { font-size:14px; color:var(--text-secondary); transition: color 0.2s; }
+.footer-right a:hover { color:var(--accent); }
+
+/* Mobile */
+@media (max-width: 900px) {
+  .hero-inner { grid-template-columns:1fr; gap:40px; padding:60px 24px; }
+  .hero-text h1 { font-size:36px; }
+  .contacts-grid { grid-template-columns:1fr; }
+  .nav { display:none; }
+  .mobile-menu-btn { display:flex; align-items:center; justify-content:center; width:40px; height:40px; }
+}
+@media (max-width: 600px) {
+  .hero-text h1 { font-size:28px; }
+  .section { padding:60px 20px; }
+  .section-title { font-size:24px; }
+  .catalog-grid { grid-template-columns:1fr; }
+  .reviews-grid { grid-template-columns:1fr; }
+  .hero-badges { gap:8px; }
+  .badge { font-size:12px; padding:6px 12px; }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width:8px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius:4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+/* Animations */
+.fade-in { animation: fadeIn 0.5s ease-out; }
+@keyframes fadeIn { from { opacity:0; transform: translateY(12px); } to { opacity:1; transform: translateY(0); } }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+  <div class="header-inner">
+    <a href="#" class="logo" aria-label="Пивная лавка — на главную">
+      <span class="logo-mark" title="Пивная лавка">
+        <svg viewBox="0 0 64 64" aria-hidden="true">
+          <path d="M10 27h44v23a7 7 0 0 1-7 7H17a7 7 0 0 1-7-7V27Z" fill="#24180a"/>
+          <path d="M8 25 13 10h38l5 15H8Z" fill="#fff5df"/>
+          <path d="M13 10h8l-2 15H8l5-15Zm16 0h7v15H27l2-15Zm15 0h7l5 15H45l-1-15Z" fill="#b4512a"/>
+          <path d="M18 38h17v19H18V38Z" fill="#f2c86f"/>
+          <path d="M39 35h9v14h-9z" fill="#f7e8c4"/>
+          <path d="M27 31c5 0 9 4 9 9v6H18v-6c0-5 4-9 9-9Z" fill="#e8a838" opacity=".95"/>
+          <path d="M37 38h5a5 5 0 0 1 0 10h-5" fill="none" stroke="#e8a838" stroke-width="3"/>
+          <path d="M21 34c2-3 10-3 12 0" fill="none" stroke="#fff5df" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+      </span>
+    </a>
+    <nav class="nav">
+      <a href="#crayfish" class="active">Живые раки</a>
+      <a href="#beer">Пиво</a>
+      <a href="#snacks">Закуски</a>
+      <a href="#reviews">Отзывы</a>
+      <a href="#contacts">Контакты</a>
+    </nav>
+    <button class="cart-btn" onclick="toggleCart()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M7 18C5.9 18 5.01 18.9 5.01 20C5.01 21.1 5.9 22 7 22C8.1 22 9 21.1 9 20C9 18.9 8.1 18 7 18ZM17 18C15.9 18 15.01 18.9 15.01 20C15.01 21.1 15.9 22 17 22C18.1 22 19 21.1 19 20C19 18.9 18.1 18 17 18ZM7.17 14.75L7.2 14.63L8.1 13H15.55C16.3 13 16.96 12.59 17.3 11.97L21.16 4.96L19.42 4H19.41L18.31 6H8.1L7.37 4.33C7.13 3.79 6.59 3.44 6 3.44H3V5.44H5.21L8.06 11.59L6.62 14.03C6.36 14.48 6.44 15.05 6.82 15.41C7.2 15.77 7.78 15.85 8.25 15.62L8.3 15.59L10.5 14.25H15.5V12.25H11.3L9.5 13.25L9.47 13.27L7.17 14.75ZM16.85 6L14.85 10H9.53L8.13 6H16.85Z" fill="currentColor"/></svg>
+      Корзина
+      <span class="cart-count" id="cartCount" style="display:none">0</span>
+    </button>
+  </div>
+</header>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <h1>Пивная лавка <span>Снегири</span></h1>
+      <p>Живые раки, свежие закуски и большой выбор разливного, крафтового и импортного пива в Снегирях. Закуски можно заказать с доставкой через Яндекс Еду.</p>
+      <div class="hero-badges">
+        <span class="badge">
+          <svg viewBox="0 0 24 24"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="currentColor"/></svg>
+          4.8 на Яндекс.Картах
+        </span>
+        <span class="badge">
+          <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20ZM12.5 7H11V13L16.2 16.2L17 14.9L12.5 12.2V7Z" fill="currentColor"/></svg>
+          Ежедневно 10:00–23:00
+        </span>
+        <span class="badge">
+          <svg viewBox="0 0 24 24"><path d="M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3ZM19 19H5V5H19V19ZM7 10H9V17H7V10ZM11 7H13V17H11V7ZM15 13H17V17H15V13Z" fill="currentColor"/></svg>
+          30 отзывов
+        </span>
+        <span class="badge">
+          <span style="font-size:16px">🦞</span>
+          Живые раки
+        </span>
+      </div>
+      <div class="hero-cta">
+        <a href="#crayfish" class="btn btn-primary">Смотреть живых раков</a>
+        <a href="tel:+79267097078" class="btn btn-secondary">Позвонить</a>
+      </div>
+    </div>
+    <div class="hero-img">
+      <img src="https://avatars.mds.yandex.net/get-altay/9728306/2a0000018f1c8b6a9c7e3e7c8f8c8c8c8c8c/XXXL" alt="Пивная лавка Снегири" onerror="this.style.display='none'; this.parentElement.style.background='var(--bg-elevated)'; this.parentElement.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-muted);font-size:18px;font-weight:600;\'>🍺 Пивная лавка</div>'">
+    </div>
+  </div>
+</section>
+
+
+<!-- Live crayfish -->
+<section class="crayfish-section" id="crayfish">
+  <div class="crayfish-feature">
+    <div>
+      <div class="crayfish-kicker">🦞 Главное в лавке</div>
+      <h2>Живые раки — свежие, отборные, к вашему столу</h2>
+      <p>Уточняйте текущий размер, наличие и стоимость. Для демонстрации сайта блок вынесен наверх, чтобы сразу показать один из самых заметных товаров лавки.</p>
+      <div class="crayfish-points">
+        <span class="crayfish-point">Свежая поставка</span>
+        <span class="crayfish-point">Цена по текущему наличию</span>
+        <span class="crayfish-point">Можно уточнить по телефону</span>
+      </div>
+      <div class="hero-cta">
+        <a href="tel:+79267097078" class="btn btn-primary">Уточнить наличие</a>
+        <a href="#snacks" class="btn btn-secondary">Смотреть закуски</a>
+      </div>
+    </div>
+    <div class="crayfish-visual" aria-label="Живые раки">🦞</div>
+  </div>
+</section>
+
+<!-- Catalog -->
+<section class="section section-soft" id="beer">
+  <div class="section-inner">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">Каталог <span>пива</span></h2>
+        <p class="section-subtitle">Свежее разливное, крафтовое и импортное пиво</p>
+      </div>
+      <div class="filters" id="beerFilters">
+        <button class="filter-btn active" data-filter="all" onclick="filterBeer('all')">Всё</button>
+        <button class="filter-btn" data-filter="craft" onclick="filterBeer('craft')">Крафт</button>
+        <button class="filter-btn" data-filter="import" onclick="filterBeer('import')">Импорт</button>
+        <button class="filter-btn" data-filter="draft" onclick="filterBeer('draft')">Разливное</button>
+      </div>
+    </div>
+    <div class="catalog-note"><strong>Пиво представлено как витрина.</strong> Алкоголь не добавляется в корзину и не оформляется через сайт.</div>
+    <div class="catalog-grid" id="beerGrid"></div>
+    <div class="catalog-actions">
+      <button class="catalog-more-btn" id="beerMoreBtn" onclick="toggleBeerCatalog()">Показать весь каталог пива</button>
+    </div>
+  </div>
+</section>
+
+<!-- Snacks -->
+<section class="section" id="snacks">
+  <div class="section-inner">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">Закуски <span>к пиву</span></h2>
+        <p class="section-subtitle">Вяленое мясо, рыба, чипсы и многое другое</p>
+      </div>
+    </div>
+    <div class="catalog-grid" id="snackGrid"></div>
+    <div class="catalog-actions">
+      <button class="catalog-more-btn" id="snackMoreBtn" onclick="toggleSnackCatalog()">Посмотреть все закуски</button>
+    </div>
+  </div>
+</section>
+
+<!-- Reviews -->
+<section class="section" id="reviews">
+  <div class="section-inner">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">Отзывы <span>гостей</span></h2>
+        <p class="section-subtitle">Что говорят о нас на Яндекс.Картах</p>
+      </div>
+    </div>
+    <div class="review-rating-summary">
+      <div class="rating-big">4.8</div>
+      <div class="rating-info">
+        <div class="review-stars">
+          <svg viewBox="0 0 24 24"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
+        </div>
+        <div class="rating-label">4.8 · 66 оценок · 30 отзывов</div>
+        <div class="rating-count">Яндекс.Карты · <a href="https://yandex.ru/maps/org/1689290283" target="_blank" style="color:var(--accent)">Открыть профиль →</a></div>
+      </div>
+    </div>
+    <div class="reviews-grid" id="reviewsGrid"></div>
+    <div class="catalog-actions" style="margin-top:28px"><a class="catalog-more-btn" href="https://yandex.ru/maps/org/1689290283" target="_blank" rel="noopener">Читать все отзывы на Яндекс.Картах</a></div>
+  </div>
+</section>
+
+<!-- Contacts -->
+<section class="section" id="contacts">
+  <div class="section-inner">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">Контакты <span>и адрес</span></h2>
+        <p class="section-subtitle">Приходите в лавку или заказывайте закуски с доставкой</p>
+      </div>
+    </div>
+    <div class="contacts-grid">
+      <div class="contact-card">
+        <div class="contact-item">
+          <div class="contact-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9C5 14.25 12 22 12 22C12 22 19 14.25 19 9C19 5.13 15.87 2 12 2ZM12 11.5C10.62 11.5 9.5 10.38 9.5 9C9.5 7.62 10.62 6.5 12 6.5C13.38 6.5 14.5 7.62 14.5 9C14.5 10.38 13.38 11.5 12 11.5Z" fill="currentColor"/></svg>
+          </div>
+          <div>
+            <div class="contact-label">Адрес</div>
+            <div class="contact-value">п. г. т. Снегири, ул. Ленина, 41</div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">
+            <svg viewBox="0 0 24 24"><path d="M6.62 10.79C8.06 13.62 10.38 15.94 13.21 17.38L15.41 15.18C15.68 14.91 16.08 14.82 16.43 14.94C17.55 15.31 18.76 15.51 20 15.51C20.55 15.51 21 15.96 21 16.51V20C21 20.55 20.55 21 20 21C10.61 21 3 13.39 3 4C3 3.45 3.45 3 4 3H7.5C8.05 3 8.5 3.45 8.5 4C8.5 5.25 8.7 6.45 9.07 7.57C9.18 7.92 9.1 8.31 8.82 8.59L6.62 10.79Z" fill="currentColor"/></svg>
+          </div>
+          <div>
+            <div class="contact-label">Телефон</div>
+            <div class="contact-value"><a href="tel:+79267097078">+7 (926) 709-70-78</a></div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">
+            <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12C2 17.52 6.47 22 11.99 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 11.99 2ZM12 20C7.58 20 4 16.42 4 12C4 7.58 7.58 4 12 4C16.42 4 20 7.58 20 12C20 16.42 16.42 20 12 20ZM12.5 7H11V13L16.25 16.15L17 14.92L12.5 12.25V7Z" fill="currentColor"/></svg>
+          </div>
+          <div>
+            <div class="contact-label">Режим работы</div>
+            <div class="contact-value">Ежедневно · 10:00–23:00</div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">
+            <svg viewBox="0 0 24 24"><path d="M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3ZM19 19H5V5H19V19ZM7 10H9V17H7V10ZM11 7H13V17H11V7ZM15 13H17V17H15V13Z" fill="currentColor"/></svg>
+          </div>
+          <div>
+            <div class="contact-label">Доставка</div>
+            <div class="contact-value">Только закуски · доставка через Яндекс Еду</div>
+          </div>
+        </div>
+      </div>
+      <div class="map-placeholder">
+        <iframe class="map-frame" src="https://yandex.ru/map-widget/v1/?ll=37.043100%2C55.880900&z=15.5&pt=37.043100,55.880900,pm2rdm" allowfullscreen loading="lazy" title="Пивная лавка, Снегири, улица Ленина, 41"></iframe>
+        <div class="map-caption">
+          <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9C5 14.25 12 22 12 22C12 22 19 14.25 19 9C19 5.13 15.87 2 12 2ZM12 11.5C10.62 11.5 9.5 10.38 9.5 9C9.5 7.62 10.62 6.5 12 6.5C13.38 6.5 14.5 7.62 14.5 9C14.5 10.38 13.38 11.5 12 11.5Z" fill="currentColor"/></svg>
+          <a href="https://yandex.ru/maps/org/1689290283" target="_blank" rel="noopener">п. г. т. Снегири, ул. Ленина, 41 · открыть в Яндекс.Картах →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-left">© 2026 Пивная лавка · Снегири</div>
+    <div class="footer-right">
+      <a href="tel:+79267097078">Позвонить</a>
+      <a href="https://yandex.ru/maps/org/1689290283" target="_blank">Яндекс.Карты</a>
+    </div>
+  </div>
+</footer>
+
+<!-- Cart Modal -->
+<div class="modal-overlay" id="cartModal" onclick="if(event.target===this)toggleCart()">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Ваша корзина</div>
+      <button class="modal-close" onclick="toggleCart()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M18.3 5.71L12 12.01L5.7 5.71L4.29 7.12L10.59 13.42L4.29 19.72L5.7 21.13L12 14.83L18.3 21.13L19.71 19.72L13.41 13.42L19.71 7.12L18.3 5.71Z" fill="currentColor"/></svg>
+      </button>
+    </div>
+    <div class="modal-body" id="cartBody">
+      <div class="cart-empty">
+        <svg viewBox="0 0 24 24"><path d="M7 18C5.9 18 5.01 18.9 5.01 20C5.01 21.1 5.9 22 7 22C8.1 22 9 21.1 9 20C9 18.9 8.1 18 7 18ZM17 18C15.9 18 15.01 18.9 15.01 20C15.01 21.1 15.9 22 17 22C18.1 22 19 21.1 19 20C19 18.9 18.1 18 17 18ZM7.17 14.75L7.2 14.63L8.1 13H15.55C16.3 13 16.96 12.59 17.3 11.97L21.16 4.96L19.42 4H19.41L18.31 6H8.1L7.37 4.33C7.13 3.79 6.59 3.44 6 3.44H3V5.44H5.21L8.06 11.59L6.62 14.03C6.36 14.48 6.44 15.05 6.82 15.41C7.2 15.77 7.78 15.85 8.25 15.62L8.3 15.59L10.5 14.25H15.5V12.25H11.3L9.5 13.25L9.47 13.27L7.17 14.75ZM16.85 6L14.85 10H9.53L8.13 6H16.85Z" fill="currentColor"/></svg>
+        <div>Корзина пуста</div>
+        <div style="font-size:13px; margin-top:8px;">Добавьте закуски из каталога</div>
+      </div>
+    </div>
+    <div class="modal-footer" id="cartFooter" style="display:none">
+      <div class="cart-total-row">
+        <span class="cart-total-label">Итого:</span>
+        <span class="cart-total-value" id="cartTotal">0 ₽</span>
+      </div>
+      <div class="cart-note">Корзина предназначена только для закусок · заказ можно уточнить по телефону <a href="tel:+79267097078" style="color:var(--accent)">+7 (926) 709-70-78</a></div>
+      <button class="btn btn-primary btn-full" onclick="orderByPhone()">Позвонить для заказа</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// Data
+const beers = [
+  { id:'b1', name:'Budweiser Budvar', desc:'Чешское светлое лагерное пиво, 5%', price:189, category:'import', tag:'hit', emoji:'🍺' },
+  { id:'b2', name:'Paulaner Hefe-Weiss', desc:'Немецкая пшеничная классика, 5.5%', price:249, category:'import', tag:'', emoji:'🍺' },
+  { id:'b3', name:'Guinness Draught', desc:'Ирландский стаут, кремовая пена, 4.2%', price:279, category:'import', tag:'', emoji:'🍺' },
+  { id:'b4', name:'Jaws Brewery APA', desc:'Российский крафт, цитрусовый аромат, 5.4%', price:199, category:'craft', tag:'new', emoji:'🍻' },
+  { id:'b5', name:'Bakunin Brewing IPA', desc:'Крафт IPA, хмелевая горечь, 6.5%', price:229, category:'craft', tag:'hit', emoji:'🍻' },
+  { id:'b6', name:'Gletcher Blanche', desc:'Бельгийский витбир, пряный, 4.5%', price:219, category:'import', tag:'', emoji:'🍺' },
+  { id:'b7', name:'Baltika 7 Export', desc:'Классический российский лагер, 5.4%', price:129, category:'draft', tag:'', emoji:'🍺' },
+  { id:'b8', name:'Zhiguli Barnoe', desc:'Жигулёвское разливное, живое, 4.5%', price:99, category:'draft', tag:'', emoji:'🍺' },
+  { id:'b9', name:'AF Brew Sour', desc:'Крафтовый кислый эль, ягодный, 4.8%', price:259, category:'craft', tag:'new', emoji:'🍻' },
+  { id:'b10', name:'Stella Artois', desc:'Бельгийский премиум-лагер, 5%', price:239, category:'import', tag:'', emoji:'🍺' },
+  { id:'b11', name:'BrewDog Punk IPA', desc:'Шотландский крафт, тропические ноты, 5.4%', price:289, category:'craft', tag:'', emoji:'🍻' },
+  { id:'b12', name:'Krušovice Imperial', desc:'Чешский темный лагер, карамель, 5%', price:209, category:'import', tag:'', emoji:'🍺' },
+];
+
+const snacks = [
+  { id:'s1', name:'Вяленое мясо ассорти', desc:'Говядина и свинина, собственного приготовления', price:349, emoji:'🥩' },
+  { id:'s2', name:'Сырные палочки', desc:'Обжаренные в панировке, 8 шт.', price:199, emoji:'🧀' },
+  { id:'s3', name:'Кальмары сушёные', desc:'К пиву — классика', price:179, emoji:'🦑' },
+  { id:'s4', name:'Арахис жареный', desc:'Солёный, 150 г', price:79, emoji:'🥜' },
+  { id:'s5', name:'Чипсы Lays', desc:'Разные вкусы на выбор', price:129, emoji:'🥔' },
+  { id:'s6', name:'Сухарики ржаные', desc:'С чесноком и укропом, 100 г', price:59, emoji:'🍞' },
+  { id:'s7', name:'Сёмга слабосолёная', desc:'Нарезка ломтиками, 100 г', price:299, emoji:'🐟' },
+  { id:'s8', name:'Оливки микс', desc:'Kalamata и зелёные, 150 г', price:149, emoji:'🫒' },
+];
+
+const reviews = [
+  { name:'Ирина Васина', date:'15 сентября 2024', text:'«Всем рекомендую этот магазинчик…»', rating:5 },
+  { name:'Дон Хуан', date:'20 сентября 2024', text:'«Отличный ассортимент, много импорта.»', rating:5 },
+  { name:'Дмитрий Дмитрий', date:'18 марта 2025', text:'«Хороший выбор и всегда свежее всё.»', rating:5 },
+];
+
+// State
+let cart = {};
+let currentBeerFilter = 'all';
+let showAllBeer = false;
+let showAllSnacks = false;
+
+// Render
+function renderBeers() {
+  const grid = document.getElementById('beerGrid');
+  const filtered = currentBeerFilter === 'all' ? beers : beers.filter(b => b.category === currentBeerFilter);
+  const visible = showAllBeer ? filtered : filtered.slice(0, 4);
+
+  grid.innerHTML = visible.map(b => `
+    <div class="product-card fade-in">
+      <div class="product-img">
+        <span class="emoji">${b.emoji}</span>
+        ${b.tag ? `<span class="product-tag ${b.tag}">${b.tag==='new'?'Новинка':'Хит'}</span>` : ''}
+      </div>
+      <div class="product-body">
+        <div class="product-name">${b.name}</div>
+        <div class="product-desc">${b.desc}</div>
+        <div class="product-meta">
+          <div class="product-price">${b.price} <span class="unit">₽</span></div>
+          <span class="product-availability">В магазине</span>
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  const moreBtn = document.getElementById('beerMoreBtn');
+  if (moreBtn) {
+    moreBtn.style.display = filtered.length > 4 ? 'inline-flex' : 'none';
+    moreBtn.textContent = showAllBeer ? 'Скрыть каталог' : 'Показать весь каталог пива';
+  }
+}
+
+function renderSnacks() {
+  const grid = document.getElementById('snackGrid');
+  const visible = showAllSnacks ? snacks : snacks.slice(0, 4);
+
+  grid.innerHTML = visible.map(s => `
+    <div class="product-card fade-in">
+      <div class="product-img">
+        <span class="emoji">${s.emoji}</span>
+      </div>
+      <div class="product-body">
+        <div class="product-name">${s.name}</div>
+        <div class="product-desc">${s.desc}</div>
+        <div class="product-meta">
+          <div class="product-price">${s.price} <span class="unit">₽</span></div>
+          ${cart[s.id] ? renderQty(s.id) : `<button class="add-btn" onclick="addToCart('${s.id}', 'snack')">+</button>`}
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  const moreBtn = document.getElementById('snackMoreBtn');
+  if (moreBtn) {
+    moreBtn.style.display = snacks.length > 4 ? 'inline-flex' : 'none';
+    moreBtn.textContent = showAllSnacks ? 'Скрыть закуски' : 'Посмотреть все закуски';
+  }
+}
+
+function renderQty(id) {
+  const qty = cart[id] || 0;
+  return `
+    <div class="qty-controls">
+      <button class="qty-btn" onclick="changeQty('${id}', -1)">−</button>
+      <span class="qty-value">${qty}</span>
+      <button class="qty-btn" onclick="changeQty('${id}', 1)">+</button>
+    </div>
+  `;
+}
+
+function renderReviews() {
+  const grid = document.getElementById('reviewsGrid');
+  grid.innerHTML = reviews.map(r => `
+    <div class="review-card fade-in">
+      <div class="review-header">
+        <div class="review-author">
+          <div class="review-avatar">${r.name.charAt(0)}</div>
+          <div>
+            <div class="review-name">${r.name}</div>
+            <div class="review-date">${r.date}</div>
+          </div>
+        </div>
+        <div class="review-stars">${'★'.repeat(r.rating)}</div>
+      </div>
+      <div class="review-text">${r.text}</div>
+    </div>
+  `).join('');
+}
+
+// Cart logic
+function addToCart(id, type) {
+  if (type === 'beer') return;
+  cart[id] = (cart[id] || 0) + 1;
+  updateCartUI();
+  renderBeers();
+  renderSnacks();
+}
+
+function changeQty(id, delta) {
+  cart[id] = (cart[id] || 0) + delta;
+  if (cart[id] <= 0) delete cart[id];
+  updateCartUI();
+  renderBeers();
+  renderSnacks();
+  if (document.getElementById('cartModal').classList.contains('open')) {
+    renderCartModal();
+  }
+}
+
+function updateCartUI() {
+  const count = Object.values(cart).reduce((a,b)=>a+b,0);
+  const badge = document.getElementById('cartCount');
+  badge.textContent = count;
+  badge.style.display = count > 0 ? 'flex' : 'none';
+}
+
+function toggleCart() {
+  const modal = document.getElementById('cartModal');
+  modal.classList.toggle('open');
+  if (modal.classList.contains('open')) {
+    renderCartModal();
+    document.body.style.overflow = 'hidden';
+  } else {
+    document.body.style.overflow = '';
+  }
+}
+
+function renderCartModal() {
+  const body = document.getElementById('cartBody');
+  const footer = document.getElementById('cartFooter');
+  const items = [];
+  let total = 0;
+
+  const allProducts = [...snacks];
+
+  for (const [id, qty] of Object.entries(cart)) {
+    const p = allProducts.find(x => x.id === id);
+    if (p) {
+      items.push({...p, qty});
+      total += p.price * qty;
+    }
+  }
+
+  if (items.length === 0) {
+    body.innerHTML = `
+      <div class="cart-empty">
+        <svg viewBox="0 0 24 24"><path d="M7 18C5.9 18 5.01 18.9 5.01 20C5.01 21.1 5.9 22 7 22C8.1 22 9 21.1 9 20C9 18.9 8.1 18 7 18ZM17 18C15.9 18 15.01 18.9 15.01 20C15.01 21.1 15.9 22 17 22C18.1 22 19 21.1 19 20C19 18.9 18.1 18 17 18ZM7.17 14.75L7.2 14.63L8.1 13H15.55C16.3 13 16.96 12.59 17.3 11.97L21.16 4.96L19.42 4H19.41L18.31 6H8.1L7.37 4.33C7.13 3.79 6.59 3.44 6 3.44H3V5.44H5.21L8.06 11.59L6.62 14.03C6.36 14.48 6.44 15.05 6.82 15.41C7.2 15.77 7.78 15.85 8.25 15.62L8.3 15.59L10.5 14.25H15.5V12.25H11.3L9.5 13.25L9.47 13.27L7.17 14.75ZM16.85 6L14.85 10H9.53L8.13 6H16.85Z" fill="currentColor"/></svg>
+        <div>Корзина пуста</div>
+        <div style="font-size:13px; margin-top:8px;">Добавьте закуски из каталога</div>
+      </div>`;
+    footer.style.display = 'none';
+  } else {
+    body.innerHTML = items.map(item => `
+      <div class="cart-item">
+        <div class="cart-item-img">${item.emoji}</div>
+        <div class="cart-item-info">
+          <div class="cart-item-name">${item.name}</div>
+          <div class="cart-item-price">${item.price} ₽ × ${item.qty}</div>
+        </div>
+        <div class="qty-controls">
+          <button class="qty-btn" onclick="changeQty('${item.id}', -1)">−</button>
+          <span class="qty-value">${item.qty}</span>
+          <button class="qty-btn" onclick="changeQty('${item.id}', 1)">+</button>
+        </div>
+        <div class="cart-item-total">${item.price * item.qty} ₽</div>
+      </div>
+    `).join('');
+    document.getElementById('cartTotal').textContent = total + ' ₽';
+    footer.style.display = 'block';
+  }
+}
+
+function orderByPhone() {
+  const allProducts = [...snacks];
+  let text = 'Здравствуйте! Хочу сделать заказ из Пивной лавки:%0A';
+  let total = 0;
+  for (const [id, qty] of Object.entries(cart)) {
+    const p = allProducts.find(x => x.id === id);
+    if (p) {
+      text += `• ${p.name} — ${qty} шт. (${p.price * qty} ₽)%0A`;
+      total += p.price * qty;
+    }
+  }
+  text += `%0AИтого: ${total} ₽`;
+  window.open(`https://wa.me/79267097078?text=${text}`, '_blank');
+}
+
+
+function toggleBeerCatalog() {
+  showAllBeer = !showAllBeer;
+  renderBeers();
+}
+
+function toggleSnackCatalog() {
+  showAllSnacks = !showAllSnacks;
+  renderSnacks();
+}
+
+function filterBeer(cat) {
+  currentBeerFilter = cat;
+  showAllBeer = false;
+  document.querySelectorAll('#beerFilters .filter-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.filter === cat);
+  });
+  renderBeers();
+}
+
+// Active nav on scroll
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav a');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(sec => {
+    const top = sec.offsetTop - 100;
+    if (scrollY >= top) current = sec.getAttribute('id');
+  });
+  navLinks.forEach(link => {
+    link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+  });
+});
+
+// Init
+renderBeers();
+renderSnacks();
+renderReviews();
+</script>
+</body>
+</html>
